@@ -1,20 +1,5 @@
 ---
 
-- name: ADD DEVICE TO INVENTORY
-  hosts: localhost
-  connection: local
-  gather_facts: no
-  
-  tasks:
-  
-    - ansible.builtin.add_host:
-        hostname: spine1
-        ansible_ssh_host: 172.80.80.21
-        ansible_user: admin
-        ansible_ssh_pass: NokiaSrl1!
-        ansible_network_os: nokia.srlinux.srlinux
-        ansible_httpapi_ciphers: ECDHE-RSA-AES256-SHA
-
 - name: TEST
   hosts: all
   connection: ansible.netcommon.httpapi
