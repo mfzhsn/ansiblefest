@@ -2,7 +2,7 @@
 
 - name: TEST
   hosts: all
-  connection: local
+  connection: ansible.netcommon.httpapi
   gather_facts: no
   
   tasks:
@@ -15,6 +15,7 @@
       commands:
         - show version
     register: output
+    ignore_errors: yes
     
   - debug:
       var: output
