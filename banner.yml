@@ -13,6 +13,6 @@
         - show version
     register: output
     
-   - debug:
-       var: output
+  - debug:
+      var: output
           
