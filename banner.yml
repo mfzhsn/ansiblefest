@@ -7,6 +7,9 @@
   
   tasks:
   
+  - debug:
+      var: hostvars
+  
   - name: Execute "show version" CLI command
     nokia.srlinux.cli:
       commands:
