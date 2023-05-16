@@ -1,4 +1,11 @@
 ---
+
+- name: TEST
+  hosts: all
+  gather_facts: no
+  
+  tasks:
+  
   - name: Setting login and motd banner to Nokia SR Linux
     nokia.srl.srl_banner:
       config:
