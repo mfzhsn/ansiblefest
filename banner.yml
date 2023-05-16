@@ -2,7 +2,7 @@
 
 - name: TEST
   hosts: all
-  connection: ansible.netcommon.httpapi
+  connection: network_cli
   gather_facts: no
   
   tasks:
