@@ -1,0 +1,21 @@
+- name: Step-1 - Creating L2 and L3 Interfaces for Leaf-1
+  include_tasks: leaf1_interfaces.yml
+
+- name: Step-2 - Creating Network Instances
+  include_tasks: leaf1_network-instance.yml
+
+- name: Step-5 - Routing Policy
+  include_tasks: leaf1_routing_policy.yml
+  
+- name: Step-3 - Underlay BGP Config
+  include_tasks: leaf1_underlay_bgp.yml
+
+- name: Step-4 - Overlay BGP Config
+  include_tasks: leaf1_overlay_bgp.yml
+
+- name: Step-6 - Tunnel-Interfaces
+  include_tasks: leaf1_tunnel.yml
+
+- name: Step-7 - Creating mac-vrf
+  include_tasks: leaf1_mac_vrf.yml
+

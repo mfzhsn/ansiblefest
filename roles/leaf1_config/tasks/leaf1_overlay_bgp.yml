@@ -1,0 +1,30 @@
+---
+  - name: Configuring Overlay BGP
+    nokia.srlinux.config:
+      update:
+        - path: /network-instance[name=default]/protocols/bgp
+          value:
+            group:
+            - group-name: iBGP-overlay
+              export-policy: all
+              import-policy: all
+              peer-as: 100
+              afi-safi:
+              - afi-safi-name: evpn
+                admin-state: enable
+              - afi-safi-name: ipv4-unicast
+                admin-state: disable
+              local-as:
+                as-number: 100
+              timers:
+                connect-retry: 1
+                minimum-advertisement-interval: 1
+            neighbor:
+            - peer-address: 10.0.2.1
+              peer-group: iBGP-overlay
+              transport:
+                local-address: 10.0.1.1
+            - peer-address: 10.0.2.2
+              peer-group: iBGP-overlay
+              transport:
+                local-address: 10.0.1.1
