@@ -1,0 +1,75 @@
+---
+- name: NetBox GraphQL query
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    URL: http://10.1.10.12:8000/graphql/
+    TOKEN: "36a874def4699e187fa6185ca0afb8b691a6343e"
+  tasks:
+    - name: Execute GraphQL query on NetBox
+      uri:
+        url: "{{ URL }}"
+        method: POST
+        headers:
+          Authorization: "Token {{ TOKEN }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          query: |
+            {
+              device_list {
+                id
+                name
+                custom_field_data
+              }
+            }
+      register: netbox_graphql_response
+
+    - name: Display NetBox GraphQL response
+      debug:
+        var: netbox_graphql_response.json.data
+
+    - debug:
+        var: "{{ item.custom_field_data | from_json }}.Ansible_Host_Port"
+      loop: "{{ netbox_graphql_response.json.data.device_list }}"
+
+    - name: ADD DEVICES TO INVENTORY
+      add_host:
+        ansible_host: 10.1.10.12
+        hostname: "{{ item.name }}"
+        ansible_user: admin
+        ansible_ssh_pass: NokiaSrl1!
+        ansible_network_os: nokia.srlinux.srlinux
+        ansible_httpapi_ciphers: ECDHE-RSA-AES256-SHA
+        ansible_connection: ansible.netcommon.httpapi
+        port_data: "{{ item.custom_field_data | from_json }}"
+        groups: Data_Center
+      loop: "{{ netbox_graphql_response.json.data.device_list }}"
+
+- name: Gather Device Data
+  hosts: Data_Center
+  connection: ansible.netcommon.httpapi
+  gather_facts: no
+  
+  tasks:
+    
+  - set_fact:
+      ansible_httpapi_port: "{{ port_data.Ansible_Host_Port }}"
+  
+  - name: Execute "show version" CLI command
+    nokia.srlinux.cli:
+      commands:
+        - show version
+    register: output
+    
+  - debug:
+      var: output
+
+
+
+
+    
+        
+
+  
