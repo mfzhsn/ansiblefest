@@ -1,24 +1,17 @@
 ---
 
-- name: TEST
+- name: Gather Device Data
   hosts: all
   gather_facts: no
   
   tasks:
-  
-  - debug:
-      var: hostvars
   
   - name: Execute "show version" CLI command
     nokia.srlinux.cli:
       commands:
         - show version
     register: output
-    ignore_errors: yes
     
   - debug:
       var: output
-      
-  - debug:
-      msg: "TEST"
           
