@@ -1,0 +1,65 @@
+---
+  - name: Leaf-1 - Add underlay interface towards spine-1
+    nokia.srlinux.config:
+      update:
+        - path: /interface[name=ethernet-1/49]
+          value:
+            admin-state: enable
+            description: "interface description set with Ansible again"
+            subinterface:
+              - index: 0
+                admin-state: enable
+                description: "subinterface description set with Ansible"
+                ip-mtu: 9000
+                ipv4:
+                  admin-state: enable
+                  address:
+                    - ip-prefix: 192.168.11.0/31
+
+
+  - name: Leaf-1 - Add underlay interface towards spine-2
+    nokia.srlinux.config:
+      update:
+        - path: /interface[name=ethernet-1/50]
+          value:
+            admin-state: enable
+            description: "interface description set with Ansible Again anad agai"
+            subinterface:
+              - index: 0
+                admin-state: enable
+                description: "subinterface description set with Ansible"
+                ip-mtu: 9000
+                ipv4:
+                  admin-state: enable
+                  address:
+                    - ip-prefix: 192.168.12.0/31
+
+
+#adding interface towards servers
+  - name: Leaf-1 - Adding interfaces towards servers
+    nokia.srlinux.config:
+      update:
+        - path: /interface[name=ethernet-1/1]
+          value:
+            admin-state: enable
+            description: "interface description set with Ansible"
+            subinterface:
+              - index: 0
+                admin-state: enable
+                description: "subinterface description set with Ansible"
+                type: bridged
+
+#adding system0
+  - name: Leaf-1 - Adding System Interface
+    nokia.srlinux.config:
+      update:
+        - path: /interface[name=system0]
+          value:
+            admin-state: enable
+            subinterface:
+              - index: 0
+                admin-state: enable
+                ipv4:
+                  admin-state: enable
+                  address:
+                    - ip-prefix: 10.0.1.1/32

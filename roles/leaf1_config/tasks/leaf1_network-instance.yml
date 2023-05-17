@@ -1,0 +1,13 @@
+---
+  - name: Creating Networking Instance
+    nokia.srlinux.config:
+      update:
+        - path: /network-instance[name=default]
+          value:
+            name: default
+            ip-forwarding:
+              receive-ipv4-check: false
+            interface:
+            - name: ethernet-1/49.0
+            - name: ethernet-1/50.0
+            - name: system0.0
