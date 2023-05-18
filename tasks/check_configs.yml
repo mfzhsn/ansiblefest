@@ -1,0 +1,13 @@
+---
+
+
+- name: Check existing configs
+   nokia.srlinux.cli:
+     commands:
+       - show network-instance default protocols bgp neighbor *
+   register: output
+   when: inventory_hostname != "localhost"
+
+- debug:
+    var: output
+

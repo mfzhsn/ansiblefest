@@ -1,0 +1,26 @@
+---
+  - name: Creating Routing Policy
+    nokia.srlinux.config:
+      update:
+        - path: /routing-policy
+          value:
+            prefix-set:
+            - name: local
+              prefix:
+              - ip-prefix: 10.0.0.0/16
+                mask-length-range: 16..32
+              - ip-prefix: 172.17.11.0/24
+                mask-length-range: 24..32
+              - ip-prefix: 192.16.0.0/16
+                mask-length-range: 16..32
+            policy:
+            - name: all
+              default-action:
+                policy-result: accept
+            - name: export-local
+              statement:
+              - name: '10'
+                match:
+                  prefix-set: local
+                action:
+                  policy-result: accept

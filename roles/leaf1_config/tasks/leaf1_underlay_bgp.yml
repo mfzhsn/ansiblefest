@@ -1,0 +1,34 @@
+---
+  - name: Creating Underlay BGP
+    nokia.srlinux.config:
+      update:
+        - path: /network-instance[name=default]/protocols/bgp
+          value:
+            autonomous-system: 101
+            router-id: 10.0.1.1
+            ebgp-default-policy:
+              import-reject-all: false
+              export-reject-all: false
+            afi-safi:
+            - afi-safi-name: ipv4-unicast
+              admin-state: enable
+              multipath:
+                allow-multiple-as: true
+                max-paths-level-1: 64
+                max-paths-level-2: 64
+            group:
+            - group-name: eBGP
+              export-policy: export-local
+              afi-safi:
+              - afi-safi-name: ipv4-unicast
+                admin-state: enable
+            neighbor:
+            - peer-address: 192.168.11.1
+              admin-state: enable
+              peer-as: 201
+              peer-group: eBGP
+            - peer-address: 192.168.12.1
+              admin-state: enable
+              peer-as: 202
+              peer-group: eBGP
+
