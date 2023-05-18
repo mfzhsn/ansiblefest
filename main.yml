@@ -30,26 +30,6 @@
     - name: Update device data in Netbox
       include_tasks: ./tasks/update_devices_in_netbox.yml
 
-- name: Configure Devices
-  hosts: "{{ device }}"
-  gather_facts: no
-  tags: [ 'leaf1_config']
-
-  tasks:
-  
-    - name: Include vars
-      include_vars:
-        dir: ./vars/
-
-    - name: Check configs
-      include_vars: ./tasks/check_configs.yml
-
-    - name: Configure devices
-      include_role:
-        name: leaf1_config
-
-    - name: Check configs
-      include_vars: ./tasks/check_configs.yml
 
 
 

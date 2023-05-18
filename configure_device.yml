@@ -1,0 +1,40 @@
+---
+
+- name: Add device to inventory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    
+    - name: Include vars
+      include_vars:
+        dir: ./vars/
+
+    - name: Add devices to inventory
+      include_tasks: ./tasks/get_devices.yml
+
+
+- name: Configure Devices
+  hosts: leaf1
+  gather_facts: no
+  tags: [ 'leaf1_config']
+
+  tasks:
+  
+    - name: Include vars
+      include_vars:
+        dir: ./vars/
+
+    - set_fact:
+        ansible_httpapi_port: "{{ port_data.Ansible_Host_Port }}"
+
+    - name: Check configs
+      include_tasks: ./tasks/check_configs.yml
+
+    - name: Configure devices
+      include_role:
+        name: leaf1_config
+
+    - name: Check configs
+      include_tasks: ./tasks/check_configs.yml
