@@ -23,5 +23,7 @@
         serial: "{{ output.result | map(attribute='basic system info.Serial Number') | first }}"
         custom_fields: 
           OS_VERSION: "{{ output.result | map(attribute='basic system info.Software Version') | first }}"
+          MAC_ADDRESS: "{{ output.result | map(attribute='basic system info.System HW MAC Address') | first }}"
+          BUILD_NUMBER: "{{ output.result | map(attribute='basic system info.Build Number') | first }}"
       state: "{{ state }}"
     register: device_creation_result
