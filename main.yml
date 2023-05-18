@@ -1,0 +1,31 @@
+---
+
+- name: Create, Delete and Modify Netbox
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    
+    - name: Include vars
+      include_vars:
+        dir: ./vars/
+
+    - name: Create devices in Netbox
+      include_tasks: ./tasks/create_devices.yml
+
+    - name: Add devices to inventory
+      include_tasks: ./tasks/get_devices.yml
+
+- name: Update devices in Netbox
+  hosts: Data_Center
+  gather_facts: no
+
+  tasks:
+  
+    - name: Include vars
+      include_vars:
+        dir: ./vars/
+
+    - name: Update device data in Netbox
+      include_tasks: ./tasks/update_devices_in_netbox.yml

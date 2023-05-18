@@ -1,0 +1,21 @@
+---
+
+
+- name: Create device in Netbox
+  netbox.netbox.netbox_device:
+    netbox_url: "{{ netbox_url }}"
+    netbox_token: "{{ netbox_token }}"
+    data:
+      name: "{{ item.name }}"
+      device_type: "{{ device_type }}"
+      device_role: "{{ role_slug }}"
+      site: "{{ site }}"
+      status: "active"
+      custom_fields:
+        Ansible_Host_Port: "{{ item.port }}"
+    state: "{{ state }}"
+  register: device_creation_result
+  loop: "{{ devices }}"
+
+- debug:
+    var: device_creation_result

@@ -1,0 +1,29 @@
+---
+
+- name: Execute GraphQL query on NetBox
+  uri:
+    url: "{{ netbox_graphql }}"
+    method: POST
+    headers:
+      Authorization: "Token {{ netbox_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      query: |
+        {
+          device_list {
+            id
+            name
+            custom_field_data
+          }
+        }
+  register: netbox_graphql_response
+  
+
+- name: ADD DEVICES TO INVENTORY
+  add_host:
+    ansible_host: "{{ jump_host }}"
+    hostname: "{{ item.name }}"
+    port_data: "{{ item.custom_field_data | from_json }}"
+    groups: "{{ group }}"
+  loop: "{{ netbox_graphql_response.json.data.device_list }}"

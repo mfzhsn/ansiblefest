@@ -1,0 +1,27 @@
+---
+
+  - set_fact:
+      ansible_httpapi_port: "{{ port_data.Ansible_Host_Port }}"
+  
+  - name: Execute "show version" CLI command
+    nokia.srlinux.cli:
+      commands:
+        - show version
+    register: output
+    when: inventory_hostname != "localhost"
+    
+  - name: Create device in Netbox
+    netbox.netbox.netbox_device:
+      netbox_url: "{{ netbox_url }}"
+      netbox_token: "{{ netbox_token }}"
+      data:
+        name: "{{ inventory_hostname }}"
+        device_type: "{{ device_type }}"
+        device_role: "{{ role_slug }}"
+        site: "{{ site }}"
+        status: "active"
+        serial: "{{ output.result | map(attribute='basic system info.Serial Number') | first }}"
+        custom_fields: 
+          OS_VERSION: "{{ output.result | map(attribute='basic system info.Software Version') | first }}"
+      state: "{{ state }}"
+    register: device_creation_result

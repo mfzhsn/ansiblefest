@@ -1,0 +1,40 @@
+---
+#NETBOX INFO
+netbox_url: "http://10.1.10.12:8000"
+netbox_token: "36a874def4699e187fa6185ca0afb8b691a6343e"
+netbox_graphql: "{{ netbox_url }}/graphql/"
+
+
+#NETBOX DEVICE REQUIREMENTS
+manufacturer: Nokia
+site: Nokia Data Center
+state: present
+device_type: SRLinux
+role_slug: switch
+
+
+#DEVICE REQUIREMENTS
+ansible_user: admin
+ansible_ssh_pass: NokiaSrl1!
+ansible_network_os: nokia.srlinux.srlinux
+ansible_httpapi_ciphers: ECDHE-RSA-AES256-SHA
+ansible_connection: ansible.netcommon.httpapi
+jump_host: 10.1.10.12
+group: Data_Center
+
+
+#DEVICES TO CREATE
+devices:
+  - name: leaf1
+    port: 8881
+  - name: leaf2
+    port: 8882
+  - name: leaf3
+    port: 8883
+  - name: spine1
+    port: 8884
+  - name: spine2
+    port: 8885
+
+
+
