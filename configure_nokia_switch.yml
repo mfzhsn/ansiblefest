@@ -1,33 +1,20 @@
-
-# updating the netbox with the inventory details of IP
-
-# - hosts: nokia
-#   gather_facts: false
-#   tags: [ 'get_chassis_info' ]
-#   roles:
-#     - 'get_chassis_info'
-
-# updating the netbox with the inventory details of IP
-
-# - hosts: nokia
-#   gather_facts: false
-#   tags: [ 'build_topology' ]
-#   roles:
-#     - 'build_topology'
-
-
-# #configuring the underlay-fabric
-
-- hosts: leaf1
-  gather_facts: false
+- name: Configure Devices
+  hosts: "{{ device }}"
+  gather_facts: no
   tags: [ 'leaf1_config']
-  roles:
-    - leaf1_config
 
-# #configuring the evpn config
+  tasks:
+  
+    - name: Include vars
+      include_vars:
+        dir: ./vars/
 
-# - hosts: nokia
-#   gather_facts: false
-#   tags: [ 'deploy_evpn']
-#   roles:
-#     - deploy_evpn
+    - name: Check configs
+      include_vars: ./tasks/check_configs.yml
+
+    - name: Configure devices
+      include_role:
+        name: leaf1_config
+
+    - name: Check configs
+      include_vars: ./tasks/check_configs.yml
